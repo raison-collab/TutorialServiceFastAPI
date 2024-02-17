@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(
+    title="Tutoring Service"
+)
 
 
 @app.get("/")
