@@ -13,3 +13,6 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 # Auth token key config
 TOKEN_SECRET = os.getenv("TOKEN_SECRET_KEY")
+
+# Debug status
+DEBUG = bool(os.getenv("DEBUG"))
