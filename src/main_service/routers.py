@@ -28,3 +28,8 @@ async def say_hello(name: str):
 @router.get("/protected")
 async def protected(user: User = Depends(current_user)):
     return {"message": f"Hello {user.email}"}
+
+
+@router.get("/age")
+async def age_(age: int):
+    return {"message": age}
