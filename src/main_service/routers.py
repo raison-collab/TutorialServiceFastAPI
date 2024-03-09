@@ -4,7 +4,8 @@ from loader import fastapi_users
 from src.auth.database import User
 
 router = APIRouter(
-    tags=['Main']
+    prefix='/api',
+    tags=['Main Api']
 )
 
 current_user = fastapi_users.current_user()

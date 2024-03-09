@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Войти{% endblock %}
+
+{% block content %}
+    <h1>Войти</h1>
+
+        <form action="#" method="post" class="sign_in-form form">
+            <input type="email" placeholder="Почта" name="email" id="email">
+            <input type="password" placeholder="Пароль" name="password" id="password">
+
+            <button type="submit"><img src="{{ url_for('static', path='img/Button.png') }}" alt="Продолжить"></button>
+        </form>
+{% endblock %}
+
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Войти</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Войти</h1>
+
+        <form action="#" method="post" class="sign_in-form form">
+            <input type="email" placeholder="Почта" name="email" id="email">
+            <input type="password" placeholder="Пароль" name="password" id="password">
+           
+            <button type="submit"><img src="sources/Button.png" alt="Продолжить"></button>
+        </form>
+    </div>
+</body>
+</html>
