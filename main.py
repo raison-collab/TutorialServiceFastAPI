@@ -1,8 +1,10 @@
 from fastapi import FastAPI
+from starlette.staticfiles import StaticFiles
 
 from config import DEBUG
 from loader import fastapi_users
 from src.main_service.routers import router as main_router
+from src.pages.routers import router as pages_router
 from src.auth.auth import auth_backend
 from src.auth.schemas import UserRead, UserCreate
 
@@ -10,6 +12,12 @@ app = FastAPI(
     title="Tutoring Service",
     debug=DEBUG
 )
+
+# include static files
+app.mount('/static', StaticFiles(directory='static'), name='static')
+
+# pages router
+app.include_router(pages_router)
 
 # Основные конечные точки
 app.include_router(main_router)

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <h1>Регистрация</h1>
+
+        <form action="#" method="post" class="reg-form form">
+                        <!-- HTML код для переключателя -->
+            <div class="switch">
+                <input type="checkbox" id="toggle"/>
+                <label for="toggle">
+                    <span class="text">Учитель</span>
+                    <span class="slider"></span>
+                    <span class="text">Ученик</span>
+                </label>
+            </div>
+
+            <input type="text" placeholder="Имя" name="first_name" id="first_name">
+            <input type="text" placeholder="Фамилия" name="second_name" id="second_name">
+            <input type="text" placeholder="Отчество" name="last_name" id="last_name">
+            <input type="email" placeholder="Почта" name="email" id="email">
+            <input type="text" placeholder="Номер карты" name="card_number" id="card_number">
+            <input type="password" placeholder="Пароль" name="password" id="password">
+            <input type="password" placeholder="Повторите пароль" name="repeat_password" id="repeat_password">
+
+            <button type="submit"><img src="{{ url_for('static', path='img/Button.png') }}" alt="Продолжить"></button>
+        </form>
+{% endblock %}
