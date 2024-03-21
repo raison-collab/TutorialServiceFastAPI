@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
@@ -25,13 +26,16 @@ app.include_router(main_router)
 # Авторизация
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
-    prefix="/auth/jwt",
+    prefix="/api/auth/jwt",
     tags=["auth"],
 )
 
 # Регистрация
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
+    prefix="/api/auth",
     tags=["auth"],
 )
+
+if __name__ == "__main__":
+    uvicorn.run(app)

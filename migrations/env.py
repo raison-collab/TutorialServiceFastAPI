@@ -9,7 +9,7 @@ from alembic import context
 
 from config import DB_HOST, DB_PORT, DB_PASSWORD, DB_USER, DB_NAME
 from src.main_service.models import metadata as main_service_metadata
-from src.auth.models import metadata as auth_metadata
+from src.auth.database import Base as AuthBase
 
 sys.path.append(os.path.join(sys.path[0], 'src'))
 
@@ -33,7 +33,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = [main_service_metadata, auth_metadata]
+target_metadata = [main_service_metadata, AuthBase.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

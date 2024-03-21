@@ -7,6 +7,7 @@ class UserRead(schemas.BaseUser[int]):
     second_name: str
     last_name: str
     card_number: str
+    role_id: int
 
 
 class UserCreate(schemas.BaseUserCreate):
@@ -14,3 +15,4 @@ class UserCreate(schemas.BaseUserCreate):
     second_name: str
     last_name: str
     card_number: str
+    role_id: int
