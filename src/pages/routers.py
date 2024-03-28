@@ -32,13 +32,13 @@ async def reg_post(data: UserRegistrationSchema):
     pprint({'body': body})
 
     role = body.pop('role')
-    body.update({'role_id': 1 if role else 0})
+    body.update({'role_id': 1 if role else 2})
 
     pprint({'body': body})
 
     headers = {'Content-Type': 'application/json'}
 
-    res = requests.post(f'{SERVER_PROTOCOL}://{SERVER_HOST}:{SERVER_PORT}/api/auth/register', data=body, headers=headers)
+    res = requests.post(f'{SERVER_PROTOCOL}://{SERVER_HOST}:{SERVER_PORT}/api/auth/register', json=body, headers=headers).json()
     pprint({"res": res.status_code})
     return {}
 
