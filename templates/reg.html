@@ -5,10 +5,10 @@
 {% block content %}
     <h1>Регистрация</h1>
 
-        <form action="#" method="post" class="reg-form form">
+        <form id="reg-form" method="post" action="#" class="reg-form form">
                         <!-- HTML код для переключателя -->
             <div class="switch">
-                <input type="checkbox" id="toggle"/>
+                <input type="checkbox" name="role" id="toggle"/>
                 <label for="toggle">
                     <span class="text">Учитель</span>
                     <span class="slider"></span>
@@ -20,10 +20,34 @@
             <input type="text" placeholder="Фамилия" name="second_name" id="second_name">
             <input type="text" placeholder="Отчество" name="last_name" id="last_name">
             <input type="email" placeholder="Почта" name="email" id="email">
-            <input type="text" placeholder="Номер карты" name="card_number" id="card_number">
+            <input type="text" placeholder="Номер карты" maxlength="16" name="card_number" id="card_number">
             <input type="password" placeholder="Пароль" name="password" id="password">
             <input type="password" placeholder="Повторите пароль" name="repeat_password" id="repeat_password">
 
-            <button type="submit"><img src="{{ url_for('static', path='img/Button.png') }}" alt="Продолжить"></button>
+            <button id="reg_button" type="submit"><img src="{{ url_for('static', path='img/Button.png') }}" alt="Продолжить"></button>
         </form>
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput/src/jquery.maskedinput.min.js" type="text/javascript"></script>
+
+<script>
+document.getElementById('reg-form').onsubmit = async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data)
+    // const response = await fetch(form.action, {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    // });
+    // const result = await response.json();
+    // console.log(result)
+};
+</script>
 {% endblock %}
