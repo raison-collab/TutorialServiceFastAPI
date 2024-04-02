@@ -21,3 +21,6 @@ SERVER_PROTOCOL = os.getenv("SERVER_PROTOCOL")
 
 # Debug status
 DEBUG = bool(os.getenv("DEBUG"))
+
+# url for connection to DB
+DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"

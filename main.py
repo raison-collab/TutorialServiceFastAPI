@@ -3,7 +3,7 @@ from starlette.staticfiles import StaticFiles
 
 from config import DEBUG, SERVER_HOST, SERVER_PORT
 from loader import app, fastapi_users, admin
-from src.admin.admin import RoleAdmin, UserAdmin
+from src.admin.admin import RoleAdmin, UserAdmin, SubjectAdmin, ServiceAdmin, OrderAdmin, StatusAdmin
 from src.main_service.routers import router as main_router
 from src.pages.routers import router as pages_router
 from src.auth.auth import auth_backend
@@ -38,6 +38,10 @@ def include_routers():
 def register_admin_models():
     admin.add_view(RoleAdmin)
     admin.add_view(UserAdmin)
+    admin.add_view(SubjectAdmin)
+    admin.add_view(ServiceAdmin)
+    admin.add_view(OrderAdmin)
+    admin.add_view(StatusAdmin)
 
 
 if __name__ == "__main__":

@@ -3,10 +3,16 @@ from typing import AsyncGenerator
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy import Integer, String, Boolean, Column, ForeignKey
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-import loader
+from config import DATABASE_URL
+
+# create engine for db
+engine = create_async_engine(DATABASE_URL)
+
+# session
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 
 class Base(DeclarativeBase):
@@ -27,14 +33,14 @@ class User(SQLAlchemyBaseUserTable[int], Base):
     second_name: Mapped[str] = mapped_column(String(length=1024), nullable=False)
     last_name: Mapped[str] = mapped_column(String(length=1024), nullable=False)
     card_number: Mapped[str] = mapped_column(String(length=1024), nullable=False)
-    role_id: int = Column(Integer, ForeignKey("role.id"))
+    role_id: Role = Column(Integer, ForeignKey("role.id"))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with loader.async_session_maker() as session:
+    async with async_session_maker() as session:
         yield session
 
 
