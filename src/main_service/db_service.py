@@ -7,9 +7,6 @@ from .errors import AlreadyExistsError
 from .models import StatusModel, SubjectModel, ServiceModel, OrderModel
 
 
-# todo Объекты с одинаковыми именами
-# todo поработать с возвращением нужных значений и выбрасыванимем ошибок
-
 class DBService:
     def __init__(self):
         self.session = async_session_maker()
@@ -120,6 +117,10 @@ class DBService:
         :param service_data:
         :return:
         """
+        is_exists = [el for el in await self.get_services() if el == service_data]
+        if is_exists:
+            raise AlreadyExistsError("Услуга с такими данными уже существует")
+
         self.session.add(ServiceModel(**service_data))
 
     async def get_service_by_id(self, service_id: int) -> dict[str, Any]:
@@ -169,6 +170,10 @@ class DBService:
         :param data:
         :return:
         """
+        is_exists = [el for el in await self.get_statuses() if el == data]
+        if is_exists:
+            raise AlreadyExistsError("Заказ с такими данными уже существует")
+
         self.session.add(OrderModel(**data))
 
     async def get_order_by_id(self, order_id: int) -> dict[str, Any]:

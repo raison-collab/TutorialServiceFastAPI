@@ -5,6 +5,7 @@ from sqlalchemy import select, delete, update
 from loader import async_session_maker
 
 from .database import Role
+from .errors import AlreadyExistsError
 
 
 class DBService:
@@ -12,6 +13,10 @@ class DBService:
         self.session = async_session_maker()
 
     async def create_role(self, data: dict[str, Any]):
+        is_exists = [el for el in await self.get_roles() if el["name"] == data["name"]]
+        if is_exists:
+            raise AlreadyExistsError(f"Роль с именем {data['name']} уже существует")
+
         self.session.add(Role(**data))
 
     async def get_roles(self) -> list[dict[str, Any]]:
