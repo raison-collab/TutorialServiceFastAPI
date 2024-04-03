@@ -11,7 +11,7 @@ class Base(DeclarativeBase):
 class SubjectModel(Base):
     __tablename__ = "subject"
     id: int = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    name: str = Column(String(length=80), nullable=False)
+    name: str = Column(String(length=80), nullable=False, unique=True)
 
 
 class ServiceModel(Base):
@@ -34,4 +34,4 @@ class OrderModel(Base):
 class StatusModel(Base):
     __tablename__ = "status"
     id: int = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    name: str = Column(String(length=85), nullable=False)
+    name: str = Column(String(length=85), nullable=False, unique=True)
