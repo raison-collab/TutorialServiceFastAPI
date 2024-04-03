@@ -3,11 +3,9 @@ from typing import Any
 from sqlalchemy import select, delete, update
 
 from loader import async_session_maker
+from .errors import AlreadyExistsError
 from .models import StatusModel, SubjectModel, ServiceModel, OrderModel
 
-
-# todo Объекты с одинаковыми именами
-# todo поработать с возвращением нужных значений и выбрасыванимем ошибок
 
 class DBService:
     def __init__(self):
@@ -19,6 +17,10 @@ class DBService:
         :param status_data:
         :return:
         """
+        is_exists = [el for el in await self.get_statuses() if el["name"] == status_data["name"]]
+        if is_exists:
+            raise AlreadyExistsError("Статус с таким названием уже есть")
+
         self.session.add(StatusModel(**status_data))
 
     async def get_statuses(self) -> list[dict[str, Any]]:
@@ -65,7 +67,11 @@ class DBService:
         :param subject_data:
         :return:
         """
-        self.session.add(SubjectModel(**subject_data))
+        is_exists = [el for el in await self.get_subjects() if el["name"] == subject_data["name"]]
+        if not is_exists:
+            self.session.add(SubjectModel(**subject_data))
+        else:
+            raise AlreadyExistsError('Предмет с таким именем уже есть')
 
     async def get_subjects(self) -> list[dict[str, Any]]:
         """
@@ -111,6 +117,10 @@ class DBService:
         :param service_data:
         :return:
         """
+        is_exists = [el for el in await self.get_services() if el == service_data]
+        if is_exists:
+            raise AlreadyExistsError("Услуга с такими данными уже существует")
+
         self.session.add(ServiceModel(**service_data))
 
     async def get_service_by_id(self, service_id: int) -> dict[str, Any]:
@@ -160,6 +170,10 @@ class DBService:
         :param data:
         :return:
         """
+        is_exists = [el for el in await self.get_statuses() if el == data]
+        if is_exists:
+            raise AlreadyExistsError("Заказ с такими данными уже существует")
+
         self.session.add(OrderModel(**data))
 
     async def get_order_by_id(self, order_id: int) -> dict[str, Any]:
