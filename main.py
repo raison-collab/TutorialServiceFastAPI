@@ -1,14 +1,23 @@
 import psycopg2
 import uvicorn
+from fastapi import FastAPI
+from sqladmin import Admin
 from starlette.staticfiles import StaticFiles
 
 from config import DEBUG, SERVER_HOST, SERVER_PORT, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_CONNECTION_TIMES
-from loader import app, fastapi_users, admin
+from loader import fastapi_users, engine
 from src.admin.admin import RoleAdmin, UserAdmin, SubjectAdmin, ServiceAdmin, OrderAdmin, StatusAdmin
 from src.main_service.routers import router as main_router
 from src.pages.routers import router as pages_router
 from src.auth.auth import auth_backend
 from src.auth.schemas import UserRead, UserCreate
+
+app = FastAPI(
+    title="Tutoring Service",
+    debug=DEBUG,
+)
+
+admin = Admin(app, engine, templates_dir='admin_templates', debug=DEBUG)
 
 
 def check_postgres_connection():
@@ -85,7 +94,7 @@ def register_admin_models():
     admin.add_view(StatusAdmin)
 
 
-if __name__ == "__main__":
+def main():
     # подключение к базе данных
     try_connect_to_database()
 
@@ -93,7 +102,5 @@ if __name__ == "__main__":
     include_routers()
     register_admin_models()
 
-    if DEBUG:
-        uvicorn.run(app)
-    else:
-        uvicorn.run(app, host=SERVER_HOST, port=SERVER_PORT)
+
+main()

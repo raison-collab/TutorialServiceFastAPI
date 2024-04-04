@@ -14,10 +14,7 @@ from src.auth.manager import get_user_manager
 #######################################################
 # FASTAPI
 #######################################################
-app = FastAPI(
-    title="Tutoring Service",
-    debug=DEBUG,
-)
+
 
 ########################################################
 # DATABASE
@@ -39,4 +36,4 @@ fastapi_users = FastAPIUsers[User, int](
 ########################################################
 # ADMIN
 ########################################################
-admin = Admin(app, engine, templates_dir='admin_templates', debug=DEBUG)
+

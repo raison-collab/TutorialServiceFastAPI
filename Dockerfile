@@ -8,4 +8,4 @@ ENV PYTHONUNBUFFERED 1
 
 COPY . .
 
-RUN pip install --no-cache-dir --upgrade -r requirements-linux.txt
+RUN pip install -r requirements-linux.txt
