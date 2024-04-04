@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends
 
 from loader import fastapi_users
 from src.auth.database import User
+from .db_service import DBService
+from .schemas import SubjectSchema
 
 router = APIRouter(
     prefix='/api',
@@ -9,6 +11,44 @@ router = APIRouter(
 )
 
 current_user = fastapi_users.current_user()
+db_service = DBService()
+
+
+@router.post("/subject")
+async def create_subject(data: SubjectSchema):
+    res = await db_service.create_subject(data.dict())
+
+    return {"id": res}
+
+
+@router.get("/subjects")
+async def get_subjects():
+    res = await db_service.get_subjects()
+
+    return {"data": res}
+
+
+@router.get("/subject/{subject_id}")
+async def get_subject_by_id(subject_id: int):
+    res = await db_service.get_subject_by_id(subject_id)
+
+    return res
+
+
+@router.put("/subject/{subject_id}")
+async def update_subject(subject_id: int, data: SubjectSchema):
+    res = await db_service.update_subject(subject_id, data.dict())
+
+    return {"id": res}
+
+
+@router.delete("/subject/{subject_id}")
+async def delete_subject(subject_id: int):
+    res = await db_service.delete_subject(subject_id)
+
+    return {"id": res}
+
+@router.post()
 
 
 @router.get("/")
