@@ -21,6 +21,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_methods=["*"]
 )
 
 admin = Admin(app, engine, templates_dir='admin_templates', debug=DEBUG)
