@@ -20,8 +20,11 @@ app = FastAPI(
 # cors чтобы связать фронт и бэк
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"]
+    # todo брать хост и порт из конфига
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 admin = Admin(app, engine, templates_dir='admin_templates', debug=DEBUG)
