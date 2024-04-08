@@ -5,7 +5,9 @@ from config import TOKEN_SECRET
 
 cookie_transport = CookieTransport(
     cookie_name='TutoringServiceFastAPIAuth',
-    cookie_max_age=3600  # токен выдается на час
+    cookie_max_age=3600,  # токен выдается на час
+    cookie_secure=False,
+    cookie_samesite='none'
 )
 
 
