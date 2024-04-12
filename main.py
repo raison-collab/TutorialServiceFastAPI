@@ -4,11 +4,13 @@ from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 
-from config import DEBUG, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_CONNECTION_TIMES
+from config import DEBUG, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_CONNECTION_TIMES, FRONTEND_URL
 from loader import fastapi_users, engine
+from sql_start_scripts.sql_scripts import save_data
 from src.admin.admin import RoleAdmin, UserAdmin, SubjectAdmin, ServiceAdmin, OrderAdmin, StatusAdmin
 from src.main_service.routers import router as main_router
 from src.pages.routers import router as pages_router
+from src.auth.routers import router as auth_router
 from src.auth.auth import auth_backend
 from src.auth.schemas import UserRead, UserCreate
 
@@ -20,8 +22,7 @@ app = FastAPI(
 # cors чтобы связать фронт и бэк
 app.add_middleware(
     CORSMiddleware,
-    # todo брать хост и порт из конфига
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -80,6 +81,8 @@ def include_routers():
     # Основные конечные точки
     app.include_router(main_router)
 
+    app.include_router(auth_router)
+
     # Авторизация
     app.include_router(
         fastapi_users.get_auth_router(auth_backend),
@@ -111,6 +114,9 @@ def main():
     # подкючение роутеров и регистрация моделей в админке
     include_routers()
     register_admin_models()
+
+    # Заполняю базу данных необходимыми данными
+    save_data()
 
 
 main()

@@ -18,6 +18,7 @@ class DBService:
             raise AlreadyExistsError(f"Роль с именем {data['name']} уже существует")
 
         self.session.add(Role(**data))
+        await self.session.commit()
 
     async def get_roles(self) -> list[dict[str, Any]]:
         res = await self.session.execute(select(Role))
@@ -33,6 +34,8 @@ class DBService:
 
     async def delete_role(self, role_id: int):
         await self.session.execute(delete(Role).where(Role.id == role_id))
+        await self.session.commit()
 
     async def update_role(self, role_id: int, data: dict[str, Any]):
         await self.session.execute(update(Role).where(Role.id == role_id).values(**data))
+        await self.session.commit()

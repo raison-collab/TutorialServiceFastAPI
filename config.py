@@ -25,3 +25,9 @@ DEBUG = bool(os.getenv("DEBUG"))
 
 # url for connection to DB
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+
+FRONTEND_HOST = os.getenv("FRONTEND_HOST")
+FRONTEND_PORT = os.getenv("FRONTEND_PORT")
+FRONTEND_PROTOCOL = os.getenv("FRONTEND_PROTOCOL")
+
+FRONTEND_URL = f'{FRONTEND_PROTOCOL}://{FRONTEND_HOST}:{FRONTEND_PORT}'
