@@ -22,6 +22,7 @@ class DBService:
             raise AlreadyExistsError("Статус с таким названием уже есть")
 
         self.session.add(StatusModel(**status_data))
+        await self.session.commit()
 
     async def get_statuses(self) -> list[dict[str, Any]]:
         """
@@ -52,6 +53,7 @@ class DBService:
         :return:
         """
         await self.session.execute(update(StatusModel).where(StatusModel.id == status_id).values(**status_data))
+        await self.session.commit()
 
     async def delete_status(self, status_id: int):
         """
@@ -60,6 +62,7 @@ class DBService:
         :return:
         """
         await self.session.execute(delete(StatusModel).where(StatusModel.id == status_id))
+        await self.session.commit()
 
     async def create_subject(self, subject_data: dict):
         """
@@ -72,6 +75,8 @@ class DBService:
             self.session.add(SubjectModel(**subject_data))
         else:
             raise AlreadyExistsError('Предмет с таким именем уже есть')
+
+        await self.session.commit()
 
     async def get_subjects(self) -> list[dict[str, Any]]:
         """
@@ -102,6 +107,7 @@ class DBService:
         :return:
         """
         await self.session.execute(update(SubjectModel).where(SubjectModel.id == subject_id).values(**subject_data))
+        await self.session.commit()
 
     async def delete_subject(self, subject_id: int):
         """
@@ -110,6 +116,7 @@ class DBService:
         :return:
         """
         await self.session.execute(delete(SubjectModel).where(SubjectModel.id == subject_id))
+        await self.session.commit()
 
     async def create_service(self, service_data: dict[str, Any]):
         """
@@ -122,6 +129,7 @@ class DBService:
             raise AlreadyExistsError("Услуга с такими данными уже существует")
 
         self.session.add(ServiceModel(**service_data))
+        await self.session.commit()
 
     async def get_service_by_id(self, service_id: int) -> dict[str, Any]:
         """
@@ -155,6 +163,7 @@ class DBService:
         :return:
         """
         await self.session.execute(update(ServiceModel).where(ServiceModel.id == service_id).values(**service_data))
+        await self.session.commit()
 
     async def delete_service(self, service_id: int):
         """
@@ -163,6 +172,7 @@ class DBService:
         :return:
         """
         await self.session.execute(delete(ServiceModel).where(ServiceModel.id == service_id))
+        await self.session.commit()
 
     async def create_order(self, data: dict[str, Any]):
         """
@@ -175,6 +185,7 @@ class DBService:
             raise AlreadyExistsError("Заказ с такими данными уже существует")
 
         self.session.add(OrderModel(**data))
+        await self.session.commit()
 
     async def get_order_by_id(self, order_id: int) -> dict[str, Any]:
         """
@@ -206,6 +217,7 @@ class DBService:
         :return:
         """
         await self.session.execute(update(OrderModel).where(OrderModel.id == order_id).values(**data))
+        await self.session.commit()
 
     async def delete_order(self, order_id: int):
         """
@@ -214,3 +226,4 @@ class DBService:
         :return:
         """
         await self.session.execute(delete(OrderModel).where(OrderModel.id == order_id))
+        await self.session.commit()

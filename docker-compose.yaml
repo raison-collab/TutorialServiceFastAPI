@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  fast-api:
+    container_name: fast-api-container
+    build: ./
+    ports:
+      - "8887:8887"
+    env_file:
+      - .env.prod
+    depends_on:
+      - alembic_runner
+    command: ["python3.12", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8887"]
+    volumes:
+      - ./:/tutoring_service_data
+    restart: always
+
+  alembic_runner:
+    container_name: alembic-container
+    build: .
+    env_file:
+      - .env.prod
+    depends_on:
+     - postgres_service
+    command: ["/bin/sh", "./docker/alembic.sh"]
+    volumes:
+      - ./:/tutoring_service
+
+  postgres_service:
+    container_name: postgres-container
+    image: postgres
+    env_file:
+      - .env.prod
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5435:${DB_PORT}"
+    volumes:
+      - .postgres:/var/lib/postgres/data
+    restart: always
+
+
