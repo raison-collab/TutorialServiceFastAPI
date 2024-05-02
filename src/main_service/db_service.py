@@ -73,6 +73,7 @@ class DBService:
         is_exists = [el for el in await self.get_subjects() if el["name"] == subject_data["name"]]
         if not is_exists:
             self.session.add(SubjectModel(**subject_data))
+            await self.session.commit()
         else:
             raise AlreadyExistsError('Предмет с таким именем уже есть')
 
