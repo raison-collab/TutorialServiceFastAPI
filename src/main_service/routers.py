@@ -13,11 +13,10 @@ router = APIRouter(
 current_user = fastapi_users.current_user()
 db_service = DBService()
 
+
 @router.get("/protected-route")
 def protected_route(user: User = Depends(current_user)):
     return f"Hello, {user.email}"
-
-
 
 
 @router.post("/subject")
@@ -164,4 +163,3 @@ async def delete_order(order_id: int):
 async def get_user_service_data(user_id: int, user: User = Depends(current_user)):
     f_name = user.first_name
     s_name = user.second_name
-

@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class SubjectSchema(BaseModel):
     name: str
 
+
 class ServiceSchema(BaseModel):
     name: str
     subject_id: int
@@ -11,8 +12,10 @@ class ServiceSchema(BaseModel):
     amount: float
     info: str
 
+
 class StatusSchema(BaseModel):
     name: str
+
 
 class OrderSchema(BaseModel):
     name: str
@@ -20,10 +23,10 @@ class OrderSchema(BaseModel):
     user_id: int
     status_id: int
 
+
 class UserServiceData(BaseModel):
     user_id: int
     role_id: int
     f_name: str
     s_name: str
     l_name: str
-

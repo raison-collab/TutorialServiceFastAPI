@@ -1,4 +1,5 @@
 from fastapi_users import schemas
+from pydantic import BaseModel
 
 
 class UserRead(schemas.BaseUser[int]):
@@ -16,3 +17,7 @@ class UserCreate(schemas.BaseUserCreate):
     last_name: str
     card_number: str
     role_id: int
+
+
+class RoleCreate(BaseModel):
+    name: str
