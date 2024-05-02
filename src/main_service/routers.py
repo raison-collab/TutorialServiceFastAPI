@@ -4,8 +4,7 @@ from loader import fastapi_users
 from src.auth.database import User
 from .db_service import DBService
 from .models import ServiceModel
-from .schemas import SubjectSchema, ServiceSchema, StatusSchema, OrderSchema, SubjectResponseSchema, \
-    ServiceResponseSchema, StatusResponseSchema, OrderResponseSchema, DeleteResponseSchema
+from .schemas import *
 
 router = APIRouter(
     prefix='/api',

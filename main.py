@@ -1,7 +1,12 @@
 import psycopg2
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from pydantic import ValidationError
 from sqladmin import Admin
+from starlette import status
 from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 from starlette.staticfiles import StaticFiles
 
 from config import DEBUG, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_CONNECTION_TIMES, FRONTEND_URL
@@ -110,6 +115,14 @@ def register_admin_models():
 def main():
     # подключение к базе данных
     try_connect_to_database()
+
+    # Подключение обработчика ошибок валидации
+    @app.exception_handler(ValidationError)
+    async def validation_error(request: Request, exc: ValidationError):
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content=jsonable_encoder({'detail': exc.errors()}),
+        )
 
     # подкючение роутеров и регистрация моделей в админке
     include_routers()
