@@ -21,3 +21,19 @@ class UserCreate(schemas.BaseUserCreate):
 
 class RoleCreate(BaseModel):
     name: str
+
+
+class RoleResponseSchema(RoleCreate):
+    id: int
+
+
+class UserServiceDataResponseSchema(BaseModel):
+    user_id: int
+    role_id: int
+    f_name: str
+    s_name: str
+    l_name: str
+
+
+class ResponseDeleteSchema(BaseModel):
+    id: int
