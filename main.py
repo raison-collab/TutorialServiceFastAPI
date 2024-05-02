@@ -36,6 +36,15 @@ app.add_middleware(
 admin = Admin(app, engine, templates_dir='admin_templates', debug=DEBUG)
 
 
+# Подключение обработчика ошибок валидации
+@app.exception_handler(ValidationError)
+async def validation_error(request: Request, exc: ValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({'detail': exc.errors()}),
+    )
+
+
 def check_postgres_connection():
     try:
         print('db-url ', DB_HOST, DB_PORT)
@@ -115,14 +124,6 @@ def register_admin_models():
 def main():
     # подключение к базе данных
     try_connect_to_database()
-
-    # Подключение обработчика ошибок валидации
-    @app.exception_handler(ValidationError)
-    async def validation_error(request: Request, exc: ValidationError):
-        return JSONResponse(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            content=jsonable_encoder({'detail': exc.errors()}),
-        )
 
     # подкючение роутеров и регистрация моделей в админке
     include_routers()
