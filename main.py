@@ -1,18 +1,21 @@
 import psycopg2
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from pydantic import ValidationError
 from sqladmin import Admin
+from starlette import status
 from starlette.middleware.cors import CORSMiddleware
-from starlette.staticfiles import StaticFiles
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 from config import DEBUG, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_CONNECTION_TIMES, FRONTEND_URL
 from loader import fastapi_users, engine
 from sql_start_scripts.sql_scripts import save_data
 from src.admin.admin import RoleAdmin, UserAdmin, SubjectAdmin, ServiceAdmin, OrderAdmin, StatusAdmin
-from src.main_service.routers import router as main_router
-from src.pages.routers import router as pages_router
-from src.auth.routers import router as auth_router
 from src.auth.auth import auth_backend
+from src.auth.routers import router as auth_router
 from src.auth.schemas import UserRead, UserCreate
+from src.main_service.routers import router as main_router
 
 app = FastAPI(
     title="Tutoring Service",
@@ -29,6 +32,15 @@ app.add_middleware(
 )
 
 admin = Admin(app, engine, templates_dir='admin_templates', debug=DEBUG)
+
+
+# Подключение обработчика ошибок валидации
+@app.exception_handler(ValidationError)
+async def validation_error(request: Request, exc: ValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({'detail': exc.errors()}),
+    )
 
 
 def check_postgres_connection():
@@ -72,12 +84,6 @@ def try_connect_to_database():
 
 
 def include_routers():
-    # include static files
-    app.mount('/static', StaticFiles(directory='static'), name='static')
-
-    # pages router
-    app.include_router(pages_router)
-
     # Основные конечные точки
     app.include_router(main_router)
 

@@ -4,26 +4,40 @@ from pydantic import BaseModel
 class SubjectSchema(BaseModel):
     name: str
 
-class ServiceSchema(BaseModel):
+
+class SubjectResponseSchema(BaseModel):
+    id: int
     name: str
+
+
+class ServiceSchema(BaseModel):
     subject_id: int
     user_id: int
     amount: float
     info: str
 
+
+class ServiceResponseSchema(ServiceSchema):
+    id: int
+
+
 class StatusSchema(BaseModel):
     name: str
 
+
+class StatusResponseSchema(StatusSchema):
+    id: int
+
+
 class OrderSchema(BaseModel):
-    name: str
     service_id: int
     user_id: int
     status_id: int
 
-class UserServiceData(BaseModel):
-    user_id: int
-    role_id: int
-    f_name: str
-    s_name: str
-    l_name: str
 
+class OrderResponseSchema(OrderSchema):
+    id: int
+
+
+class DeleteResponseSchema(BaseModel):
+    id: int
