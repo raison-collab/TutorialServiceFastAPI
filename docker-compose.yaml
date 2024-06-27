@@ -12,7 +12,7 @@ services:
       - alembic_runner
     command: ["python3.12", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8887"]
     volumes:
-      - ./:/tutoring_service_data
+      - ./:/tutoring_service
     restart: always
 
   alembic_runner:
@@ -25,6 +25,17 @@ services:
     command: ["/bin/sh", "./docker/alembic.sh"]
     volumes:
       - ./:/tutoring_service
+
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins-container
+    ports:
+      - "8080:8080" # Веб-интерфейс Jenkins
+      - "50000:50000"  # Связь между Jenkins master и agents
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    user: root
 
   postgres_service:
     container_name: postgres-container
@@ -39,6 +50,8 @@ services:
       - "5435:${DB_PORT}"
     volumes:
       - .postgres:/var/lib/postgres/data
+      - ./docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Добавляем инициализационный скрипт
     restart: always
 
-
+volumes:
+  jenkins_home:
