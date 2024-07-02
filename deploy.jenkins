@@ -3,7 +3,7 @@ pipeline {
 
     environment {
        FAST_API_SERVICE_CONTAINER = "fast-api-container"
-//       ENV_FILE = ".env.prod"
+       FAST_API_SERVICE = "fast-api"
     }
 
     stages {
@@ -12,14 +12,6 @@ pipeline {
             steps {
                 git 'https://github.com/raison-collab/TutorialServiceFastAPI.git'
             }
-        }
-
-        stage('Build') {
-           steps {
-               script {
-                   docker.build(FAST_API_SERVICE_CONTAINER)
-               }
-           }
         }
 
 //        stage('Test') {
@@ -40,7 +32,7 @@ pipeline {
                    // Остановка и удаление старого контейнера
                    sh """
                    docker-compose down
-                   docker-compose up -d --build ${FAST_API_SERVICE_CONTAINER}
+                   docker-compose up -d --build ${FAST_API_SERVICE}
                    """
                }
            }
