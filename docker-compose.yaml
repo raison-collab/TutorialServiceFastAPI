@@ -3,6 +3,7 @@ version: "3.8"
 services:
   fast-api:
     container_name: fast-api-container
+    image: fast-api
     build: ./
     ports:
       - "8887:8887"
@@ -17,6 +18,7 @@ services:
 
   alembic_runner:
     container_name: alembic-container
+    image: fast-api
     build: .
     env_file:
       - .env.prod
@@ -25,17 +27,6 @@ services:
     command: ["/bin/sh", "./docker/alembic.sh"]
     volumes:
       - ./:/tutoring_service
-
-  jenkins:
-    image: jenkins/jenkins:lts-jdk11
-    container_name: jenkins-container
-    ports:
-      - "8080:8080" # Веб-интерфейс Jenkins
-      - "50000:50000"  # Связь между Jenkins master и agents
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    user: root
 
   postgres_service:
     container_name: postgres-container
