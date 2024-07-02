@@ -1,18 +1,25 @@
 pipeline {
-   agent any
+    agent any
 
-   environment {
+    environment {
        FAST_API_SERVICE_CONTAINER = "fast-api-container"
-   }
+    }
 
-   stages {
-       stage('Build') {
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/raison-collab/TutorialServiceFastAPI.git'
+            }
+        }
+
+        stage('Build') {
            steps {
                script {
                    docker.build(FAST_API_SERVICE)
                }
            }
-       }
+        }
 
 //        stage('Test') {
 //            steps {
@@ -24,18 +31,18 @@ pipeline {
 //            }
 //        }
 
-       stage('Deploy') {
+        stage('Deploy') {
            steps {
                script {
                    docker.image(FAST_API_SERVICE).push()
                }
            }
-       }
-   }
+        }
+    }
 
-   post {
+    post {
        always {
            cleanWs()
        }
-   }
+    }
 }
