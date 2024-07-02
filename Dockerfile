@@ -9,5 +9,3 @@ ENV PYTHONUNBUFFERED 1
 COPY . .
 
 RUN pip install -r requirements-linux.txt
-
-RUN cp .env.default .env.prod
