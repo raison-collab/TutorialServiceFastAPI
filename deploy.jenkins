@@ -34,7 +34,11 @@ pipeline {
         stage('Deploy') {
            steps {
                script {
-                   docker.image(FAST_API_SERVICE).push()
+                   // Остановка и удаление старого контейнера
+                   sh """
+                   docker-compose down
+                   docker-compose up -d --build ${FAST_API_SERVICE_CONTAINER}
+                   """
                }
            }
         }
