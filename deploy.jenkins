@@ -3,6 +3,7 @@ pipeline {
 
     environment {
        FAST_API_SERVICE = "fast-api"
+       ALEMBIC_SERVICE = "alembic_runner"
        ENV_FILE = ".env.prod"
     }
 
@@ -29,10 +30,10 @@ pipeline {
                script {
                    // Остановка и удаление старого контейнера
                    sh """
-                   docker-compose --env-file ${ENV_FILE} stop ${FAST_API_SERVICE}
-                   docker-compose --env-file ${ENV_FILE} rm -f ${FAST_API_SERVICE}
-                   docker-compose --env-file ${ENV_FILE} build ${FAST_API_SERVICE}
-                   docker-compose --env-file ${ENV_FILE} up -d ${FAST_API_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} stop ${FAST_API_SERVICE} ${ALEMBIC_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} rm -f ${FAST_API_SERVICE} ${ALEMBIC_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} build ${FAST_API_SERVICE} ${ALEMBIC_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate ${ALEMBIC_SERVICE} ${FAST_API_SERVICE}
                    """
                }
            }
