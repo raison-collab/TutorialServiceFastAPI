@@ -16,7 +16,7 @@ pipeline {
         stage('Build') {
            steps {
                script {
-                   docker.build(FAST_API_SERVICE)
+                   docker.build(FAST_API_SERVICE_CONTAINER)
                }
            }
         }
