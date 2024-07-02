@@ -43,6 +43,3 @@ services:
       - .postgres:/var/lib/postgres/data
       - ./docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Добавляем инициализационный скрипт
     restart: always
-
-volumes:
-  jenkins_home:
