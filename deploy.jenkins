@@ -36,7 +36,13 @@ pipeline {
            steps {
                script {
                    // Загрузка переменных окружения из файла
-                   def envVars = readFile(ENV_FILE).split("\n").collect { it.split("=") }.collectEntries { [(it[0]): it[1])] }
+                   def envVars = readFile(ENV_FILE).split("\n").collect { line ->
+                       def parts = line.split("=")
+                       if (parts.size() == 2) {
+                           return [(parts[0].trim()): parts[1].trim()]
+                       }
+                       return [:]
+                   }.collectEntries { it }
                    envVars.each { k, v -> env[k] = v }
 
                    // Остановка и удаление старого контейнера
