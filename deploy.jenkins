@@ -4,6 +4,7 @@ pipeline {
     environment {
        FAST_API_SERVICE_CONTAINER = "fast-api-container"
        FAST_API_SERVICE = "fast-api"
+       ENV_FILE = ".env.prod"
     }
 
     stages {
@@ -27,12 +28,10 @@ pipeline {
         stage('Deploy') {
            steps {
                script {
-
-
                    // Остановка и удаление старого контейнера
                    sh """
-                   docker-compose down
-                   docker-compose up -d --build ${FAST_API_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} down
+                   docker-compose --env-file ${ENV_FILE} up -d --build ${FAST_API_SERVICE}
                    """
                }
            }
