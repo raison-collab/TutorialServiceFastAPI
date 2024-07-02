@@ -31,7 +31,8 @@ pipeline {
                    sh """
                    docker-compose --env-file ${ENV_FILE} stop ${FAST_API_SERVICE}
                    docker-compose --env-file ${ENV_FILE} rm -f ${FAST_API_SERVICE}
-                   docker-compose --env-file ${ENV_FILE} up -d --build ${FAST_API_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} build ${FAST_API_SERVICE}
+                   docker-compose --env-file ${ENV_FILE} up -d ${FAST_API_SERVICE}
                    """
                }
            }
