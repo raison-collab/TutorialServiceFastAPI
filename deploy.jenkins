@@ -6,7 +6,7 @@ pipeline {
        FAST_API_CONTAINER = "fast-api-container"
 
        DB_HOST="localhost"
-       DB_PORT=5435
+       DB_PORT=5432
 
        ALEMBIC_SERVICE = "alembic_runner"
        ALEMBIC_CONTAINER = "alembic-container"
