@@ -5,6 +5,9 @@ pipeline {
        FAST_API_SERVICE = "fast-api-service"
        FAST_API_CONTAINER = "fast-api-container"
 
+       DB_HOST="127.0.0.1"
+       DB_PORT=5435
+
        ALEMBIC_SERVICE = "alembic_runner"
        ALEMBIC_CONTAINER = "alembic-container"
 
@@ -41,10 +44,14 @@ pipeline {
 
                    docker run --name alembic-container \
                         --env-file .env.prod \
+                        -e DB_HOST=$DB_HOST \
+                        -e DB_PORT=$DB_PORT \
                         -d fast-api:latest /bin/sh ./docker/alembic.sh
 
                    docker run --name fast-api-container \
                        --env-file .env.prod \
+                       -e DB_HOST=$DB_HOST \
+                       -e DB_PORT=$DB_PORT \
                        -p 8887:8887 \
                        -d fast-api:latest python3.12 -m uvicorn main:app --host 0.0.0.0 --port 8887
                    """
