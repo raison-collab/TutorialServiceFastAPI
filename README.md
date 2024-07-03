@@ -40,6 +40,7 @@ FRONTEND_PROTOCOL=http
 
 ## Docker
 
-`docker compose build`
+`docker compose up -d --build`
 
-`docker compose up -d`
+### Для запуска отдельного сервиса из docker compose
+`docker compose --env-file ENV_FILE up -d --build SERVICE_NAME`
