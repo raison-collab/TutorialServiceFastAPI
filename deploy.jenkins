@@ -5,7 +5,7 @@ pipeline {
        FAST_API_SERVICE = "fast-api-service"
        FAST_API_CONTAINER = "fast-api-container"
 
-       DB_HOST="127.0.0.1"
+       DB_HOST="localhost"
        DB_PORT=5435
 
        ALEMBIC_SERVICE = "alembic_runner"
