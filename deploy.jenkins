@@ -34,14 +34,11 @@ pipeline {
                script {
                    // Остановка и удаление старого контейнера
                    sh """
-                   echo("stopping and removing containers")
-                   docker stop ${FAST_API_CONTAINER} ${ALEMBIC_CONTAINER} // сделать контейнеры
+                   docker stop ${FAST_API_CONTAINER} ${ALEMBIC_CONTAINER}
                    docker rm -f ${FAST_API_CONTAINER} ${ALEMBIC_CONTAINER}
 
-                   echo("building new image")
                    docker-compose --env-file ${ENV_FILE} build ${FAST_API_SERVICE} ${ALEMBIC_SERVICE}
 
-                   echo("starting new containers")
                    docker-compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate ${ALEMBIC_SERVICE}
                    docker-compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate ${FAST_API_SERVICE}
                    """
