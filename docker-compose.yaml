@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  fast-api:
+  fast-api-service:
     container_name: fast-api-container
     image: fast-api
     build: ./
@@ -24,7 +24,7 @@ services:
       - .env.prod
     command: ["/bin/sh", "./docker/alembic.sh"]
     volumes:
-      - ./:/tutoring_service
+      - ./migrations/versions:/tutoring_service/migrations/versions
 
   postgres_service:
     container_name: postgres-container
@@ -39,7 +39,7 @@ services:
       - "5435:${DB_PORT}"
     volumes:
       - .postgres:/var/lib/postgres/data
-      - ./docker/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Добавляем инициализационный скрипт
+      - ./docker/init_db.sh:/docker-entrypoint-initdb.d/init-db.sh  # Добавляем инициализационный скрипт
     restart: always
 
   jenkins:

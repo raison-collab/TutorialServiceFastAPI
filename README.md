@@ -40,7 +40,14 @@ FRONTEND_PROTOCOL=http
 
 ## Docker
 
-`docker compose up -d --build`
+`docker compose up -d --build` (см "Рекомендуемый способ запуска" для избежания ошибок)
 
 ### Для запуска отдельного сервиса из docker compose
 `docker compose --env-file ENV_FILE up -d --build SERVICE_NAME`
+
+### Рекомендуемый способ запуска
+В docker-compose.yaml отсутсвуют некоторые зависимости при запуске (сделано для избежания проблем сборки через jenkins). Запускать сервисы из compose следует в данном порядке:
+1. postgres_service `docker compose --env-file .env.prod up --build postgres_service ` (возможна ошибка, следует удалить дирректорию в проекте `docker/init-db.sh`)
+2. jenkins `docker compose --env-file .env.prod up --build jenkins` (Провести его настройку)
+3. alembic_runner `docker compose --env-file .env.prod up ---build alembic_runner`
+4. fast-api-service `docker compose --env-file .env.prod up fast-api-service` 
