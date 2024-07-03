@@ -41,11 +41,11 @@ pipeline {
 
                    docker run --name alembic-container \
                         --env-file .env.prod \
-                        -v ./migrations/versions:/tutoring_service/migrations/versions \
+                        -v `pwd`/migrations/versions:/tutoring_service/migrations/versions \
                         -d fast-api:latest /bin/sh ./docker/alembic.sh
 
                    docker run --name fast-api-container \
-                       -v ./:/tutoring_service \
+                       -v `pwd`:/tutoring_service \
                        --env-file .env.prod \
                        -p 8887:8887 \
                        -d fast-api:latest python3.12 -m uvicorn main:app --host 0.0.0.0 --port 8887
