@@ -40,7 +40,7 @@ pipeline {
                    docker compose --env-file ${ENV_FILE} build ${FAST_API_SERVICE} ${ALEMBIC_SERVICE}
 
                    docker compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate ${ALEMBIC_SERVICE}
-                   docker compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate --ports 8887:8887 ${FAST_API_SERVICE}
+                   docker compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate -p 8887:8887 ${FAST_API_SERVICE}
                    """
                }
            }
