@@ -1,10 +1,17 @@
 version: "3.8"
 
+
+networks:
+  services_network:
+    external: true
+
 services:
   fast-api-service:
     container_name: fast-api-container
     image: fast-api
     build: ./
+    networks:
+      - services_network
     ports:
       - "8887:8887"
     env_file:
@@ -20,6 +27,8 @@ services:
     container_name: alembic-container
     image: fast-api
     build: .
+    networks:
+      - services_network
     env_file:
       - .env.prod
     command: ["/bin/sh", "./docker/alembic.sh"]

@@ -2,6 +2,7 @@ version: "3.8"
 
 networks:
   services_network:
+    external: true
 
 services:
   postgres_service:

@@ -40,6 +40,9 @@ FRONTEND_PROTOCOL=http
 
 ## Docker
 
+#### Необходимо создать сеть
+`docker network create services_network`
+
 `docker compose up -d --build` (см "Рекомендуемый способ запуска" для избежания ошибок)
 
 ### Для запуска отдельного сервиса из docker compose
