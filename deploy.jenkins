@@ -39,10 +39,7 @@ pipeline {
 
                    docker compose --env-file ${ENV_FILE} build ${FAST_API_SERVICE} ${ALEMBIC_SERVICE}
 
-//                   docker compose --env-file ${ENV_FILE} up -d --no-deps --force-recreate ${ALEMBIC_SERVICE}
-
                    docker run --name alembic-container \
-                        -v alembic-container
                         --env-file .env.prod\
                         -v $(pwd)/migrations/versions:/tutoring_service/migrations/versions
                         -d fast-api:latest /bin/sh ./docker/alembic.sh
