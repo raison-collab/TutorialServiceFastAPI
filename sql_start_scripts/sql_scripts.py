@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2 import sql
 
 from config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 
@@ -33,14 +34,16 @@ connection = psycopg2.connect(
     host=DB_HOST,
     port=DB_PORT,
 )
-
 cursor = connection.cursor()
 
 
 def save_data():
     for index, el in enumerate(roles, start=1):
         try:
-            cursor.execute(f"INSERT INTO role(id, name) VALUES({index}, '{el}')")
+            cursor.execute(
+                sql.SQL("INSERT INTO role (id, name) VALUES (%s, %s)"),
+                [index, el]
+            )
         except psycopg2.errors.UniqueViolation:
             connection.rollback()
             continue
@@ -49,7 +52,10 @@ def save_data():
 
     for index, el in enumerate(subjects, start=1):
         try:
-            cursor.execute(f"INSERT INTO subject(id, name) VALUES({index}, '{el}')")
+            cursor.execute(
+                sql.SQL("INSERT INTO subject (id, name) VALUES (%s, %s)"),
+                [index, el]
+            )
         except psycopg2.errors.UniqueViolation:
             connection.rollback()
             continue
