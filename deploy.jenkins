@@ -21,15 +21,15 @@ pipeline {
             }
         }
 
-//        stage('Test') {
-//            steps {
-//                script {
-//                    docker.image(FAST_API_SERVICE).inside {
-//                        sh 'pytest'
-//                    }
-//                }
-//            }
-//        }
+        stage('Test') {
+            steps {
+                script {
+                    docker.image(FAST_API_SERVICE).inside {
+                        sh 'pytest -v ./tests'
+                    }
+                }
+            }
+        }
 
         stage('Deploy') {
            steps {
