@@ -25,9 +25,16 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker.image(FAST_API_IMAGE).inside {
-                    sh "pytest ./tests"
-                    }
+                    sh """
+                    docker run --name alembic-container-test \
+                        --env-file .env.prod \
+                        --network ${DOCKER_NETWORK} \
+                        -d fast-api:latest /bin/sh ./docker/alembic.sh
+
+                    docker exec -t alembic-container-test sh -c "pytest ./tests"
+
+                    docker rm alembic-container-test
+                    """
                 }
             }
         }
