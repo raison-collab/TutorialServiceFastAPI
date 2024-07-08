@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "-- Started init-db.sh"
+
 # Чтение значений из переменных окружения
 DB_NAME=${DB_NAME:-default_db_name}
 DB_USER=${DB_USER:-default_db_user}

@@ -73,7 +73,7 @@ async def test_basic_user_register(ac: AsyncClient):
         assert res_admin.status_code == 201, "Request Error"
 
         res_json = res.json()
-        res_admin_json = res.json()
+        res_admin_json = res_admin.json()
 
         assert res_json["email"] == "userunique@example.com", "Invalid email"
         assert res_admin_json["email"] == "adminunique@example.com", "Invalid admin email"
