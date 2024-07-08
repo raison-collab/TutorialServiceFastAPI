@@ -24,9 +24,9 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker.image(FAST_API_CONTAINER).inside {
-                        sh 'pytest -v ./tests'
-                    }
+                    sh """
+                    pytest -v ./tests
+                    """
                 }
             }
         }
