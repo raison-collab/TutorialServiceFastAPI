@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    pytest -v ./tests
+                    docker exec ${FAST_API_CONTAINER} ./docker/run_pytest.sh
                     """
                 }
             }
