@@ -26,7 +26,8 @@ pipeline {
             steps {
                 script {
                     sh """
-                    docker rm alembic-container-test
+                    docker ps -q --filter "name=alembic-container-test" | xargs --no-run-if-empty docker rm -f "alembic-container-test"
+
 
                     docker run --name alembic-container-test \
                         --env-file .env.prod \
