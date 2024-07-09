@@ -35,9 +35,11 @@ app.dependency_overrides[get_async_session] = override_get_async_session
 async def setup_db():
     async with engine.begin() as conn:
         await conn.run_sync(AuthBase.metadata.create_all)
-        trans = await conn.begin_nested()
+        # trans = await conn.begin_nested()
         yield  # Здесь выполняются ваши тесты
-        await trans.rollback()
+        # await trans.rollback()
+        await conn.run_sync(AuthBase.metadata.drop_all)
+        await conn.commit()
 
 
 @pytest.fixture(scope="session")
