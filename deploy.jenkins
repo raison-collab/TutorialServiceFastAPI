@@ -32,7 +32,7 @@ pipeline {
                     docker run --name alembic-container-test \
                         --env-file .env.prod \
                         --network ${DOCKER_NETWORK} \
-                        --volume --volume ./migrations/versions:/tutoring_service/migrations/versions
+                        --volume ./migrations/versions:/tutoring_service/migrations/versions
                         --rm \
                         -d fast-api sh -c "pytest ./tests"
                     """
