@@ -5,6 +5,7 @@ pipeline {
        FAST_API_SERVICE = "fast-api-service"
        FAST_API_CONTAINER = "fast-api-container"
        FAST_API_IMAGE = "fast-api:latest"
+       FAST_API_IMG = "fast-api"
 
        ALEMBIC_SERVICE = "alembic_runner"
        ALEMBIC_CONTAINER = "alembic-container"
@@ -45,7 +46,7 @@ pipeline {
                    // Остановка и удаление старого контейнера
                    sh """
                    docker rm -f ${FAST_API_CONTAINER} ${ALEMBIC_CONTAINER}
-                   docker rmi ${FAST_API_IMAGE}
+                   docker rmi ${FAST_API_IMG}
 
                    docker compose --env-file $ENV_FILE build $ALEMBIC_SERVICE
 
