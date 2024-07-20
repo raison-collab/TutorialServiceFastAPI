@@ -44,10 +44,10 @@ pipeline {
                script {
                    // Остановка и удаление старого контейнера
                    sh """
-                   docker stop ${FAST_API_CONTAINER} ${ALEMBIC_CONTAINER}
                    docker rm -f ${FAST_API_CONTAINER} ${ALEMBIC_CONTAINER}
+                   docker rmi ${FAST_API_IMAGE}
 
-                   docker compose --env-file $ENV_FILE build $FAST_API_SERVICE $ALEMBIC_SERVICE
+                   docker compose --env-file $ENV_FILE build $ALEMBIC_SERVICE
 
                    docker run --name alembic-container \
                         --env-file .env.prod \
