@@ -1,0 +1,49 @@
+rules:
+  # SQL-инъекции
+  - id: fastapi-sql-injection-simple-query-format
+    patterns:
+      - pattern: |
+          @app.get($ROUTE)
+          async def $FUNC($ARGS, query: str):
+            $BODY
+      - pattern-either:
+          - pattern: $DB.execute(f"SELECT ... WHERE ... {query} ...")
+          - pattern: $DB.execute("SELECT ... WHERE ...".format($PARAM=query))
+    message: "Потенциальная SQL-инъекция! Не используйте f-строки или format для формирования SQL-запросов."
+    languages:
+      - python
+    severity: ERROR
+
+  # Утечка конфиденциальной информации
+  - id: fastapi-information-disclosure-debug-mode
+    languages:
+      - python3
+    patterns:
+      - pattern: app = FastAPI(debug=True)
+    message: "Утечка информации! Отключите debug-режим в production."
+    severity: WARNING
+
+  # Утечка конфиденциальной информации в принтах
+  - id: fastapi-information-disclosure-printing-secrets
+    languages:
+      - python3
+    patterns:
+      - pattern-either:
+          - pattern: print($SECRET)
+          - pattern: logging.info($SECRET)
+          - pattern: logger.info($SECRET)
+    metavariable-regex:
+      SECRET: "(password|token|secret|api_key)"
+    message: "Потенциальная утечка конфиденциальной информации! Не выводите секреты в логи или консоль."
+    severity: ERROR
+
+  # конфигурация Docker
+  - id: docker-unnecessary-root
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-either:
+        - pattern: FROM ... AS root
+        - pattern: USER root
+    message: "Небезопасная конфигурация Docker! Избегайте запуска контейнера от имени root."
+    severity: WARNING
